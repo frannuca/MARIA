@@ -11,26 +11,26 @@ open Accord.Neuro.Learning
 [<EntryPoint>]
 let main argv = 
     printfn "%A" argv
-    let rbm = new CRBM(2,15)
+    let rbm = new CRBM(3,31)
     let rhoM = 
-        let rho = Matrix<float>.Build.Dense(2,2)
+        let rho = Matrix<float>.Build.Dense(3,3)
         rho.[0,0] <- 1.0
         rho.[0,1] <- 0.6
-        //rho.[0,2] <- 0.3
+        rho.[0,2] <- 0.3
 
         rho.[1,0] <- rho.[0,1]
         rho.[1,1] <- 1.0
-       // rho.[1,2] <- 0.3
+        rho.[1,2] <- 0.3
 
-        //rho.[2,0] <- rho.[0,2]
-        //rho.[2,1] <- rho.[1,2]
-       // rho.[2,2] <- 1.0    
+        rho.[2,0] <- rho.[0,2]
+        rho.[2,1] <- rho.[1,2]
+        rho.[2,2] <- 1.0    
         rho
 
     let genData N =        
-        let mu = [|-0.0;0.0|]
+        let mu = [|-0.0;0.0;0.0|]
 
-        let sigma = Matrix<float>.Build.DiagonalOfDiagonalArray([|1.0;1.0|])
+        let sigma = Matrix<float>.Build.DiagonalOfDiagonalArray([|1.0;1.0;1.0|])
         
         let C= sigma*rhoM*sigma
 
@@ -40,7 +40,7 @@ let main argv =
         let a = phi.Generate(N)
         (Matrix<float>.Build.DenseOfColumnArrays(a))
 
-    let data = genData 1000
+    let data = genData 2000
     //let rmb2 = new CRBMACCORD(2,13,data.Transpose().ToRowArrays())
     //rmb2.Run(2000)
     rbm.learn(data)(2000,1)
