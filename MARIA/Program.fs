@@ -43,7 +43,7 @@ let main argv =
     let data = genData 1000
     //let rmb2 = new CRBMACCORD(2,13,data.Transpose().ToRowArrays())
     //rmb2.Run(2000)
-    rbm.learn(data)(2000,2)
+    rbm.learn(data)(2000,1)
     let Z=data.Transpose()
     use writer=new System.IO.StreamWriter(@"E:\crbm_input.csv")
     for i in 0 .. Z.RowCount-1 do
