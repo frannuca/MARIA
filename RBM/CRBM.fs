@@ -8,12 +8,12 @@ type CRBM(Nv:int,Nh:int)=
   
     let mutable bestW =Matrix<float>.Build.Random(Nv+1,Nh+1,new MathNet.Numerics.Distributions.ContinuousUniform(-0.01,0.01))
     let mutable bestAh = Vector<float>.Build.DenseOfArray  [| for i in 0 .. Nh do yield 0.25|] //Exponential factor for sigmoids in hidden layer
-    let mutable Av = Vector<float>.Build.DenseOfArray  [| for i in 0 .. Nv do yield 0.1|] //Exponential factor for sigmoids in visible layer
+    let mutable Av = Vector<float>.Build.DenseOfArray  [| for i in 0 .. Nv do yield 0.05|] //Exponential factor for sigmoids in visible layer
     let mutable Ah = Vector<float>.Build.DenseOfArray  [| for i in 0 .. Nh do yield 0.25|] //Exponential factor for sigmoids in hidden layer
     
     let dAh = Vector<float>.Build.DenseOfArray(Array.zeroCreate(Nh+1))
 
-    let sigmoid = (new activation.Sigmoid(-5.0,5.0)) :> activation.IActivation<float>
+    let sigmoid = (new activation.Sigmoid(-10.0,10.0)) :> activation.IActivation<float>
 
     //Optimization parameters:
     let sigma = 0.1
@@ -94,10 +94,12 @@ type CRBM(Nv:int,Nh:int)=
                 momentum <- momentum*0.8
                 epsW <- epsW*0.8
                 epsA <- epsA*0.8
+                momentum <- momentum*0.9
                 if epsW < 1e-3 then 
                     epsW <- 1e-3
                 if epsA < 1e-3 then 
                     epsA <- 1e-3
+                
 
                 noimprovement <- 0
                 totalnoimprovement <- 0
