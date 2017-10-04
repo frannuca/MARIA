@@ -11,26 +11,36 @@ open Accord.Neuro.Learning
 [<EntryPoint>]
 let main argv = 
     printfn "%A" argv
-    let rbm = new CRBM(3,31)
+    let rbm = new CRBM(4,61)
     let rhoM = 
-        let rho = Matrix<float>.Build.Dense(3,3)
+        let rho = Matrix<float>.Build.Dense(4,4)
+
         rho.[0,0] <- 1.0
-        rho.[0,1] <- 0.6
+        rho.[0,1] <- 0.78
         rho.[0,2] <- 0.3
+        rho.[0,3] <- 0.4
 
         rho.[1,0] <- rho.[0,1]
         rho.[1,1] <- 1.0
-        rho.[1,2] <- 0.3
+        rho.[1,2] <- 0.5
+        rho.[1,3] <- 0.15
 
         rho.[2,0] <- rho.[0,2]
         rho.[2,1] <- rho.[1,2]
-        rho.[2,2] <- 1.0    
+        rho.[2,2] <- 1.0
+        rho.[2,3] <- 0.2    
+
+        rho.[3,0] <- rho.[0,3]
+        rho.[3,1] <- rho.[1,3]
+        rho.[3,2] <- rho.[2,3]
+        rho.[3,3] <- 1.0    
+
         rho
 
     let genData N =        
-        let mu = [|-0.0;0.0;0.0|]
+        let mu = [|-0.0;0.0;0.0;0.0|]
 
-        let sigma = Matrix<float>.Build.DiagonalOfDiagonalArray([|1.0;1.0;1.0|])
+        let sigma = Matrix<float>.Build.DiagonalOfDiagonalArray([|1.0;1.0;1.0;1.0|])
         
         let C= sigma*rhoM*sigma
 
@@ -53,7 +63,7 @@ let main argv =
 
 
     //rbm.learn(data)(1500,10) |> ignore
-    let Zn = rbm.reconstruct(data)(1000,1)
+    let Zn = rbm.reconstruct(data)(10000,1)
     let Z=Zn.Transpose()
     //let Z = Matrix<float>.Build.DenseOfRowArrays( rmb2.sample(500,20))
 

@@ -13,10 +13,10 @@ type CRBM(Nv:int,Nh:int)=
     
     let dAh = Vector<float>.Build.DenseOfArray(Array.zeroCreate(Nh+1))
 
-    let sigmoid = (new activation.Sigmoid(-9.0,9.0)) :> activation.IActivation<float>
+    let sigmoid = (new activation.Sigmoid(-5.0,5.0)) :> activation.IActivation<float>
 
     //Optimization parameters:
-    let sigma = 0.15
+    let sigma = 0.1
     let mutable epsW = 0.01
     let mutable epsA = 0.01
     let mutable cost = 0.0
