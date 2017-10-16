@@ -12,8 +12,15 @@ type CRBM(Nv:int,Nh:int,opsparam:OptParams)=
     let mutable Ah = d.Ah
     let mutable Av = d.Av
   
+<<<<<<< HEAD
     let mutable bestW = W.Clone()
     let mutable bestAh = Ah.Clone()
+=======
+    let mutable bestW =Matrix<float>.Build.Random(Nv+1,Nh+1,new MathNet.Numerics.Distributions.ContinuousUniform(-0.01,0.01))
+    let mutable bestAh = Vector<float>.Build.DenseOfArray  [| for i in 0 .. Nh do yield 0.25|] //Exponential factor for sigmoids in hidden layer
+    let mutable Av = Vector<float>.Build.DenseOfArray  [| for i in 0 .. Nv do yield 0.05|] //Exponential factor for sigmoids in visible layer
+    let mutable Ah = Vector<float>.Build.DenseOfArray  [| for i in 0 .. Nh do yield 0.25|] //Exponential factor for sigmoids in hidden layer
+>>>>>>> 077679bc0166d6f3219489cac91eda11dfe4937f
     
     let dAh = Ah*0.0
     let nBatches = opsparam.nBatches
@@ -92,8 +99,47 @@ type CRBM(Nv:int,Nh:int,opsparam:OptParams)=
                             wneg <- wneg + tmp
                             aneg <- aneg + sh.PointwiseMultiply(sh)
 
+<<<<<<< HEAD
                             let delta = sv - xin
                             err.[i] <- err.[i] + delta.L2Norm()
+=======
+                let delta = sv - xin
+                err.[i] <- err.[i]+ delta.L2Norm()
+            
+            printfn " iter=%i, ERROR=%f" i err.[i]
+            if i > 0 && err.[i] < (err.[0 .. i-1]|> Array.min) then
+                bestW <- W
+                bestAh <- Ah
+                noimprovement <- 0
+                totalnoimprovement <- 0
+            else
+                totalnoimprovement <- totalnoimprovement + 1
+
+            if  i > 0 && err.[i] > err.[i-1] then
+                noimprovement <- noimprovement+1
+            else 
+                noimprovement <- 0
+
+            if noimprovement>50 || totalnoimprovement>200 then
+                W<-bestW+Matrix<float>.Build.Random(W.RowCount,W.ColumnCount)*0.01
+                Ah <-bestAh+Vector<float>.Build.Random(Ah.Count)*0.01
+                momentum <- momentum*0.8
+                epsW <- epsW*0.8
+                epsA <- epsA*0.8
+                momentum <- momentum*0.9
+                if epsW < 1e-3 then 
+                    epsW <- 1e-3
+                if epsA < 1e-3 then 
+                    epsA <- 1e-3
+                
+
+                noimprovement <- 0
+                totalnoimprovement <- 0
+            else
+                dW <- dW * momentum + epsW* (wpos-wneg)/nsamples - cost*W
+                W <- W + dW
+                Ah <- Ah + epsA* (apos-aneg)/(nsamples* sh.PointwiseMultiply(sh))
+>>>>>>> 077679bc0166d6f3219489cac91eda11dfe4937f
 
                             ()
                     

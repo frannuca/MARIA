@@ -6,7 +6,7 @@ open MARIA.RBM.Data
 open MathNet.Numerics.LinearAlgebra
 open Accord.Neuro
 open Accord.Neuro.ActivationFunctions
-
+ 
 [<EntryPoint>]
 let main argv = 
     printfn "%A" argv
