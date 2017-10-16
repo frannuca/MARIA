@@ -53,11 +53,13 @@
   <Import Project="$(FSharpTargetsPath)" />
   <ItemGroup>
     <Compile Include="AssemblyInfo.fs" />
+    <Compile Include="OptParams.fs" />
+    <Compile Include="MatrixGenerator.fs" />
     <Compile Include="activation.fs" />
-    <None Include="Script.fsx" />
-    <Content Include="packages.config" />
     <Compile Include="CRBM.fs" />
     <Compile Include="CRBMACCORD.fs" />
+    <None Include="Script.fsx" />
+    <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Accord">
@@ -84,7 +86,6 @@
     <Reference Include="MathNet.Numerics.FSharp">
       <HintPath>..\packages\MathNet.Numerics.FSharp.3.20.0\lib\net40\MathNet.Numerics.FSharp.dll</HintPath>
     </Reference>
-    <Reference Include="mscorlib" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Numerics" />

@@ -2,16 +2,26 @@
 // See the 'F# Tutorial' project for more help.
 
 open MARIA.RBM
+open MARIA.RBM.Data
 open MathNet.Numerics.LinearAlgebra
 open Accord.Neuro
 open Accord.Neuro.ActivationFunctions
-open Accord.Neuro.Networks
-open Accord.Neuro.Learning
 
 [<EntryPoint>]
 let main argv = 
     printfn "%A" argv
-    let rbm = new CRBM(4,61)
+    let oparam = {OptParams.activationSigma= Some(0.025);
+                  OptParams.lrAh =1e-3;
+                  OptParams.lrW =1e-2;
+                  OptParams.l2regularization=Some(1e-5);
+                  OptParams.momentum=Some(0.75);
+                  OptParams.ftol=1e-6;
+                  OptParams.niter=500;
+                  OptParams.xtol=1e-6;
+                  OptParams.nBatches=5;
+                  }
+
+    let rbm = new CRBM(4,31,oparam)
     let rhoM = 
         let rho = Matrix<float>.Build.Dense(4,4)
 
@@ -49,11 +59,16 @@ let main argv =
         let arr = Array.zeroCreate(N)
         let a = phi.Generate(N)
         (Matrix<float>.Build.DenseOfColumnArrays(a))
+    let genDataRandom(N:int) =        
+        let mu = [|-0.0;0.0;0.0;0.0|]
 
-    let data = genData 2000
+        let phi = new Accord.Statistics.Distributions.Multivariate.UniformBallDistribution(mu,0.5)
+        let a:float[][] = phi.Generate(N)
+        (Matrix<float>.Build.DenseOfColumnArrays(a))
+    let data = genData 2500
     //let rmb2 = new CRBMACCORD(2,13,data.Transpose().ToRowArrays())
     //rmb2.Run(2000)
-    rbm.learn(data)(2000,1)
+    rbm.learn(data)(1)
     let Z=data.Transpose()
     use writer=new System.IO.StreamWriter(@"E:\crbm_input.csv")
     for i in 0 .. Z.RowCount-1 do
