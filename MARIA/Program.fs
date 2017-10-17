@@ -10,7 +10,7 @@ open Accord.Neuro.ActivationFunctions
 [<EntryPoint>]
 let main argv = 
     printfn "%A" argv
-    let oparam = {OptParams.activationSigma= Some(0.5);
+    let oparam = {OptParams.activationSigma= Some(1.0);
                   OptParams.lrAh =1e-3;
                   OptParams.lrW =1e-2;
                   OptParams.l2regularization=Some(1e-5);
