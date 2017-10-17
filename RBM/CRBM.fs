@@ -105,7 +105,7 @@ type CRBM(Nv:int,Nh:int,opsparam:OptParams)=
 
                         dW <- dW * momentum + epsW* (wpos-wneg)/nSamplesPerBatch - cost*W
                         W <- W + dW
-                        Ah <- Ah + epsA* (apos-aneg)/(nSamplesPerBatch* sh.PointwiseMultiply(sh))
+                        //Ah <- Ah + epsA* (apos-aneg)/(nSamplesPerBatch* sh.PointwiseMultiply(sh))
                 
                           
                         if i>0 then

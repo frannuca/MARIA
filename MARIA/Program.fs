@@ -10,7 +10,7 @@ open Accord.Neuro.ActivationFunctions
 [<EntryPoint>]
 let main argv = 
     printfn "%A" argv
-    let oparam = {OptParams.activationSigma= Some(0.025);
+    let oparam = {OptParams.activationSigma= Some(0.5);
                   OptParams.lrAh =1e-3;
                   OptParams.lrW =1e-2;
                   OptParams.l2regularization=Some(1e-5);
@@ -21,7 +21,7 @@ let main argv =
                   OptParams.nBatches=5;
                   }
 
-    let rbm = new CRBM(4,31,oparam)
+    let rbm = new CRBM(4,101,oparam)
     let rhoM = 
         let rho = Matrix<float>.Build.Dense(4,4)
 
@@ -65,7 +65,7 @@ let main argv =
         let phi = new Accord.Statistics.Distributions.Multivariate.UniformBallDistribution(mu,0.5)
         let a:float[][] = phi.Generate(N)
         (Matrix<float>.Build.DenseOfColumnArrays(a))
-    let data = genData 2500
+    let data = genData 500
     //let rmb2 = new CRBMACCORD(2,13,data.Transpose().ToRowArrays())
     //rmb2.Run(2000)
     rbm.learn(data)(1)
@@ -78,7 +78,7 @@ let main argv =
 
 
     //rbm.learn(data)(1500,10) |> ignore
-    let Zn = rbm.reconstruct(data)(10000,1)
+    let Zn = rbm.reconstruct(data)(1000000,10)
     let Z=Zn.Transpose()
     //let Z = Matrix<float>.Build.DenseOfRowArrays( rmb2.sample(500,20))
 
